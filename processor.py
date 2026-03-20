@@ -1,7 +1,7 @@
 from __future__ import annotations
 import os
 import glob
-import pd as pd  # type: ignore
+import pandas as pd  # type: ignore
 import shutil
 from bs4 import BeautifulSoup, Tag  # type: ignore
 from datetime import datetime, timedelta
@@ -41,7 +41,17 @@ LAYOUTS = {
         'Setup time', 'Cut time', 'Interruption time', 'Interv. time', 'Total time', 
         'Amount of patterns', 'Cutted patterns', 'Production Order', 'Spread leaves', 'Even', 
         'Total of cutted patterns', 'Amount compl. mod.', 'Prod. pieces'
+    ],
+    ('Portuguese', 35): [
+        '#', 'File', 'Fabric', 'Ori. Length (mm)', 'Ori. Width (mm)', 'XF', 'YF', 
+        'Real Length (mm)', 'Real Width (mm)', 'Total perim. (mm)', 'Cutted perim. (mm)', 
+        'Spread height (mm)', 'Spread hardness', 'Rec.', 'Username', 'Date', 'Opened', 
+        'Begin', 'End', 'Closed', 'Setup time', 'Cut time', 'Interruption time', 
+        'Interv. time', 'Total time', 'Avg cut speed (m/min)', 'Avg percentage of cut speed (%)', 
+        'Amount of patterns', 'Cutted patterns', 'Production Order', 'Spread leaves', 'Even', 
+        'Total of cutted patterns', 'Amount compl. mod.', 'Prod. pieces'
     ]
+
 
 }
 
@@ -216,7 +226,7 @@ def split_row(row_data: dict[str, list[str]], filename: str, detected_lang: str 
 
     # Helper for Valid File
     def calculate_valid_file(row):
-        perim_cols = ['Cutted perim. (mm)', 'Total perim. (mm)']
+        perim_cols = ['Cutted perim. (mm)']
         valid = 'Yes'
         for col in perim_cols:
             vals = row_data.get(col, ["0"])
