@@ -384,21 +384,33 @@ def split_row(row_data: dict[str, list[str]], filename: str, detected_lang: str 
 def main():
     input_dir = r"C:\Users\henrique.tamaki\OneDrive - Audaces Automacao e Informatica Industrial Ltda\2601 OneTouch\Bravo\Antigravity Bravo\Input"
     output_dir = r"C:\Users\henrique.tamaki\OneDrive - Audaces Automacao e Informatica Industrial Ltda\2601 OneTouch\Bravo\Antigravity Bravo\Output"
+
+    print("--- Configuration & Paths ---")
+    try:
+        input_prompt = input(f"Enter the Input folder path [default: {input_dir}]: ").strip()
+        if input_prompt:
+            input_dir = input_prompt
+            output_dir = os.path.join(os.path.dirname(input_dir), "Output")
+            
+        output_prompt = input(f"Enter the Output folder path [default: {output_dir}]: ").strip()
+        if output_prompt:
+            output_dir = output_prompt
+
+        max_setup = float(input("Enter maximum setup time (minutes) [default 2]: ") or 2)
+        max_interr = float(input("Enter maximum interruption time (minutes) [default 2]: ") or 2)
+        max_interv = float(input("Enter maximum interval time (minutes) [default 2]: ") or 2)
+    except (EOFError, Exception):
+        print("[CONTROL] Non-interactive mode or invalid input. Using defaults.")
+        if 'max_setup' not in locals(): max_setup = 2.0
+        if 'max_interr' not in locals(): max_interr = 2.0
+        if 'max_interv' not in locals(): max_interv = 2.0
+        
     processed_dir = os.path.join(input_dir, "processado")
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     if not os.path.exists(processed_dir):
         os.makedirs(processed_dir)
-        
-    print("--- Configuration Thresholds ---")
-    try:
-        max_setup = float(input("Enter maximum setup time (minutes) [default 2]: ") or 2)
-        max_interr = float(input("Enter maximum interruption time (minutes) [default 2]: ") or 2)
-        max_interv = float(input("Enter maximum interval time (minutes) [default 2]: ") or 2)
-    except (EOFError, Exception):
-        print("[CONTROL] Non-interactive mode or invalid input. Using defaults (2 min).")
-        max_setup, max_interr, max_interv = 2.0, 2.0, 2.0
         
     thresholds = {
         'max_setup_minutes': max_setup,
