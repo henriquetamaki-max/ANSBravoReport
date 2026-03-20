@@ -1,7 +1,7 @@
 from __future__ import annotations
 import os
 import glob
-import pandas as pd  # type: ignore
+import pd as pd  # type: ignore
 import shutil
 from bs4 import BeautifulSoup, Tag  # type: ignore
 from datetime import datetime, timedelta
@@ -439,9 +439,11 @@ def main():
             for r in rows:
                 translated_r: dict[str, list[str]] = {}
                 for i, (orig_k, val) in enumerate(r.items()):
-
-                     new_k = layout_cols[i] if layout_cols and i < len(layout_cols) else orig_k
+                     new_k = orig_k
+                     if layout_cols and i < len(layout_cols):
+                          new_k = list(layout_cols)[i]
                      translated_r[new_k] = val
+
                 translated_rows.append(translated_r)
                 
             # Compute Max Height
@@ -465,7 +467,7 @@ def main():
              original_ordered = [c for c in layout_cols if c in df.columns]
              new_cols = [c for c in df.columns if c not in layout_cols]
              df = df[original_ordered + new_cols]
-              
+             
         df = df.fillna("0")
         
         def format_excel_decimal(val):
