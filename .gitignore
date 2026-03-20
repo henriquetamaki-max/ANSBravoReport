@@ -1,0 +1,9 @@
+Input/
+Output/
+__pycache__/
+*.pyc
+.pytest_cache/
+test_layouts_pt.py
+output.txt
+*.csv
+*.txt
